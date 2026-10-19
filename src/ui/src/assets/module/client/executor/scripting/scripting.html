@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKID</title>
+  <script type="module" crossorigin src="../../../unminified.js"></script>
+  <link rel="stylesheet" crossorigin href="../../../assets/index-u2vJTCPg.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+    if (typeof window.__TAURI_IPC__ !== "function") {
+      window.__TAURI_IPC__ = function (message) {
+        const { cmd, callback, error, ...rest } = message || {};
+        console.warn("[TAURI IPC stub] cmd:", cmd, rest);
+        try {
+          // For UI-only preview we just resolve immediately with undefined.
+          if (typeof callback === "function") {
+            callback(undefined);
+          }
+        } catch (err) {
+          console.error("[TAURI IPC stub] callback error", err);
+          if (typeof error === "function") {
+            error(err);
+          }
+        }
+      };
+    }
+  </script>
+
+
+  <script>
+    (function () {
+      try {
+        var path = window.location.pathname || "";
+        if (path && path !== "/") {
+          window.history.replaceState(null, "", "/");
+        }
+      } catch (e) {
+        console.warn("Failed to normalize path for router:", e);
+      }
+    })();
+  </script>
+</body>
+
+</html>
