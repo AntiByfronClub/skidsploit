@@ -1,10 +1,3 @@
-// Rust cannot use a C++ `REBASE` macro as a compile-time const.
-// The equivalent in Rust is a runtime helper that adds the module base,
-// while keeping the original dump values as raw offsets.
-//
-// If you want runtime-resolved values, use: offsets::rebase(0x8F59810)
-// or the equivalent helper in your call site.
-
 use windows_sys::Win32::System::LibraryLoader::GetModuleHandleA;
 
 #[inline(always)]
