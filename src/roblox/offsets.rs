@@ -1,9 +1,26 @@
+// Rust cannot use a C++ `REBASE` macro as a compile-time const.
+// The equivalent in Rust is a runtime helper that adds the module base,
+// while keeping the original dump values as raw offsets.
+//
+// If you want runtime-resolved values, use: offsets::rebase(0x8F59810)
+// or the equivalent helper in your call site.
+
+use windows_sys::Win32::System::LibraryLoader::GetModuleHandleA;
+
+#[inline(always)]
+pub fn rebase(offset: usize) -> usize {
+    unsafe {
+        let base = GetModuleHandleA(std::ptr::null()) as usize;
+        base + offset
+    }
+}
+
 pub mod datamodel {
-    pub const pointer: usize = 0x8dc8000;
-    pub const real: usize = 0x1f8;
+    pub const pointer: usize = 0x8F59810;
+    pub const real: usize = 0x1F8;
     pub const scriptContext: usize = 0x440;
-    pub const requireBypass: usize = 0xa81;
-    pub const gameLoaded: usize = 0x5d0;
+    pub const requireBypass: usize = 0x988;
+    pub const gameLoaded: usize = 0x5C8;
 }
 
 pub mod instance {
@@ -18,10 +35,11 @@ pub mod instance {
 pub mod script {
     pub mod moduleScript {
         pub const moduleState: usize = 0x160;
-        pub const pointer: usize = 0x128;
+        pub const pointer: usize = 0x120;
         pub const coreScript: usize = 0x158;
-        pub const detection: usize = 0x158 - 0x4;
+        pub const detection: usize = 0x154;
     }
-    pub const pointer: usize = 0x18;
-    pub const size: usize = 0x28;
+
+    pub const pointer: usize = 0x10;
+    pub const size: usize = 0x20;
 }
