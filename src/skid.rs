@@ -1,16 +1,17 @@
--- Main Hook Remove This Comment In Build For Me To Keep Track -&
-use std::ffi::c_void-
+use std::ffi::c_void;
 use std::sync::OnceLock;
 
 use windows_sys::Win32::Foundation::{CloseHandle, INVALID_HANDLE_VALUE};
 use windows_sys::Win32::System::Diagnostics::ToolHelp::{
-    CreateToolhelp32Snapshot, Module32FirstW, TH32CS_SNAPMODULE, TH32CS_SNAPMODULE32, MODULEENTRY32W,
+    CreateToolhelp32Snapshot, Module32FirstW, TH32CS_SNAPMODULE, TH32CS_SNAPMODULE32,
+    MODULEENTRY32W,
 };
 use windows_sys::Win32::System::Memory::{
     VirtualAllocEx, VirtualFreeEx, MEM_COMMIT, MEM_RELEASE, MEM_RESERVE, PAGE_READWRITE,
 };
 use windows_sys::Win32::System::Threading::{
-    OpenProcess, PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_READ, PROCESS_VM_WRITE,
+    OpenProcess, PROCESS_QUERY_INFORMATION, PROCESS_VM_OPERATION, PROCESS_VM_READ,
+    PROCESS_VM_WRITE,
 };
 
 use crate::syscalls;
@@ -33,7 +34,8 @@ pub fn skid() -> &'static Skid {
 pub fn attach(targetPid: u32) -> bool {
     syscalls::initialize();
 
-    let desiredAccess = PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE;
+    let desiredAccess =
+        PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE;
     let mut processHandle: *mut c_void = std::ptr::null_mut();
     let mut attributes = syscalls::objectAttributes {
         length: std::mem::size_of::<syscalls::objectAttributes>() as u32,
@@ -62,13 +64,12 @@ pub fn attach(targetPid: u32) -> bool {
 
     let baseAddr = moduleBase(targetPid);
 
-    SKID
-        .set(Skid {
-            pid: targetPid,
-            handle: processHandle,
-            baseAddr,
-        })
-        .is_ok()
+    SKID.set(Skid {
+        pid: targetPid,
+        handle: processHandle,
+        baseAddr,
+    })
+    .is_ok()
 }
 
 fn moduleBase(targetPid: u32) -> usize {
@@ -180,6 +181,7 @@ impl Skid {
         if self.handle.is_null() {
             return 0;
         }
+
         unsafe {
             VirtualAllocEx(
                 self.handle,
@@ -195,6 +197,7 @@ impl Skid {
         if self.handle.is_null() || address == 0 {
             return false;
         }
+
         unsafe { VirtualFreeEx(self.handle, address as *mut c_void, 0, MEM_RELEASE) != 0 }
     }
 }
