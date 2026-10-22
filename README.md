@@ -20,3 +20,21 @@ disclaimer:
 **we do not condone the use of malicious Roblox scripts or abuse of Roblox executors.
 This project is provided for entertainment and educational purposes only.
 Use at your own risk. <3**
+
+How to update DYNs signer made with love: hi, heres a tutorial on how to update dyn's bytecode signer for any version, the tutorial uses the idb for latest
+some notes:
+- i forgot to mention that the function containing the key rva is the verify function ie `Native::Verify`
+- change the minimum payload to 256 else scripts below 1024 bytes wont be signed and thus wont load since roblox changes its minimum for signing check based on a runtime flag thus better to assume maximum possible minimum and sign
+idapython script you will need:
+
+import ida_bytes
+def dump(rva, size, path):
+    data = ida_bytes.get_bytes(rva, size)
+    open(path, "wb").write(data)
+    print(f"written {size} bytes to {path}")
+dump(0x6914A80, 0x10, "signature_constant.bin") # 1 x 16 bytes = 16 bytes
+dump(0x6924A90, 0x10000, "signature_linear_b.bin") # 4096 x 16 bytes = 64 kilobytes
+dump(0x6914A90, 0x10000, "signature_linear_a.bin") # 4096 x 16 bytes = 64 kilobytes
+dump(0x6934A90, 0x3c0000, "signature_quadratic.bin") # 245760 x 16 bytes = approx 3.75 megabytes
+
+happy skidding!
