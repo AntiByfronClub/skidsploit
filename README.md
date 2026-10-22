@@ -4,17 +4,16 @@
 
 hi skid.
 
-this is a base so you can make your own shitsploits, if you dont like it, stop crying and fix it, or just dont use it, idc.
+this is a base so you can make your own shitsploits. and this base will try to upkeep with dyn signing updates and offsets though not perfect.
 
-if u want to contribute dont add new unc functions or features, just fix the already existing ones. (pls dont use ai slop, not saying to not use ai, dont pr slop code or untested stuff).
-
-its very easy to update, find offsets in roblox/offsets.rs and update them, also update the verifier in the signer made by dyn.
+its very easy to update most offsets are public knowledge through websites.
 
 star repo pls.
 
 credits:
 - @dyn for the signer
 - @Okafor-twd (HOLY TWD) for the awp ui framework
+- Lzyps Fork Creator For Upkeep 
 
 disclaimer:
 
